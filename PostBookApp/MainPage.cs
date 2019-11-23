@@ -47,12 +47,13 @@ namespace PostBookApp
             
             if (!string.IsNullOrEmpty(result.AccessToken))
             {
-                m_LoggedInUser = result.LoggedInUser;
-                MessageBox.Show("You are logged in!");
+                this.m_LoggedInUser = result.LoggedInUser;
+                this.m_ProfileImage.LoadAsync(this.m_LoggedInUser.PictureSmallURL);
+                MessageBox.Show(string.Format("Hello {0} {1}", this.m_LoggedInUser.FirstName, this.m_LoggedInUser.LastName));
             }
             else
             {
-                MessageBox.Show(result.ErrorMessage);
+                MessageBox.Show("Error while logging in");
             }
         }
 
