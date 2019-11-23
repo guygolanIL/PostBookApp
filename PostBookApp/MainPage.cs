@@ -22,8 +22,7 @@ namespace PostBookApp
 
         private void loginAndInit()
         {
-
-            LoginResult result = FacebookService.Login("817562982032756", 
+            LoginResult result = FacebookService.Login("817562982032756",
 
                 "public_profile",
                 "email",
@@ -44,7 +43,7 @@ namespace PostBookApp
                 "user_posts",
                 "user_hometown"
                 );
-            
+
             if (!string.IsNullOrEmpty(result.AccessToken))
             {
                 this.m_LoggedInUser = result.LoggedInUser;
@@ -57,6 +56,9 @@ namespace PostBookApp
             }
         }
 
-
+        private void logout(object sender, EventArgs e)
+        {
+            FacebookService.Logout(new Action(() => this.m_ProfileImage.ImageLocation = ""));
+        }
     }
 }
