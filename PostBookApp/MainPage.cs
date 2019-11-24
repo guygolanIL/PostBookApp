@@ -49,6 +49,7 @@ namespace PostBookApp
                 this.m_LoggedInUser = result.LoggedInUser;
                 this.m_ProfileImage.LoadAsync(this.m_LoggedInUser.PictureSmallURL);
                 MessageBox.Show(string.Format("Hello {0} {1}", this.m_LoggedInUser.FirstName, this.m_LoggedInUser.LastName));
+                this.fetchFriends();
             }
             else
             {
@@ -58,7 +59,52 @@ namespace PostBookApp
 
         private void logout(object sender, EventArgs e)
         {
-            FacebookService.Logout(new Action(() => this.m_ProfileImage.ImageLocation = ""));
+            FacebookService.Logout(new Action(() => {
+                this.m_ProfileImage.ImageLocation = "";
+                this.m_FriendProfileImage.ImageLocation = "";
+                this.m_FriendProfileImageBorder.BackColor = Color.White;
+                this.m_FriendsList.Items.Clear();
+            }));
+        }
+
+        private void fetchFriends()
+        {
+            this.m_FriendsList.Items.Clear();
+            this.m_FriendsList.DisplayMember = "Name";
+            foreach (User friend in m_LoggedInUser.Friends)
+            {
+                this.m_FriendsList.Items.Add(friend);
+                friend.ReFetch(DynamicWrapper.eLoadOptions.Full);
+            }
+
+            if (this.m_LoggedInUser.Friends.Count == 0)
+            {
+                MessageBox.Show("No Friends to retrieve :(");
+            }
+        }
+
+        private void displaySelectedFriend(object sender, EventArgs e)
+        {
+            if (this.m_FriendsList.SelectedItems.Count == 1)
+            {
+                User selectedFriend = this.m_FriendsList.SelectedItem as User;
+                User.eOnlineStatus? status = selectedFriend.OnlineStatus;
+                if (selectedFriend.PictureNormalURL != null)
+                {
+                    this.m_FriendProfileImage.LoadAsync(selectedFriend.PictureSmallURL);
+                    if(status != null)
+                    {
+                        if(status == User.eOnlineStatus.active)
+                        {
+                            this.m_FriendProfileImageBorder.BackColor = Color.LawnGreen;
+                        }
+                    }
+                    else // since getting online status always return null i'll color it red 
+                    {
+                       this.m_FriendProfileImageBorder.BackColor = Color.Red;        
+                    }
+                }
+            }
         }
     }
 }
