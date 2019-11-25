@@ -63,15 +63,20 @@ namespace PostBookApp
         private void logout(object sender, EventArgs e)
         {
             FacebookService.Logout(new Action(() => {
-                this.m_ProfileImage.ImageLocation = "";
-                this.m_FriendProfileImage.ImageLocation = "";
-                this.m_FriendProfileImageBorder.BackColor = Color.White;
-                this.m_CheckinsList.Items.Clear();
-                this.m_FriendsList.Items.Clear();
-                this.m_PostsList.Items.Clear();
-                this.m_LogoutButton.Enabled = false;
-                this.m_LoginButton.Enabled = true;
+                this.clearUIData();
             }));
+        }
+
+        private void clearUIData()
+        {
+            this.m_ProfileImage.ImageLocation = "";
+            this.m_FriendProfileImage.ImageLocation = "";
+            this.m_FriendProfileImageBorder.BackColor = Color.White;
+            this.m_CheckinsList.Items.Clear();
+            this.m_FriendsList.Items.Clear();
+            this.m_PostsList.Items.Clear();
+            this.m_LogoutButton.Enabled = false;
+            this.m_LoginButton.Enabled = true;
         }
 
         private void fetchLikedPages()
