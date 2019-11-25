@@ -46,13 +46,13 @@ namespace PostBookApp
 
             if (!string.IsNullOrEmpty(result.AccessToken))
             {
-                this.m_LoginButton.Enabled = false;
-                this.m_LogoutButton.Enabled = true;
                 this.m_LoggedInUser = result.LoggedInUser;
-                this.m_ProfileImage.LoadAsync(this.m_LoggedInUser.PictureSmallURL);
+
                 this.fetchFriends();
                 this.fetchCheckins();
                 this.fetchPosts();
+
+                this.showUIComponents();
             }
             else
             {
@@ -60,23 +60,50 @@ namespace PostBookApp
             }
         }
 
+        private void showUIComponents()
+        {
+            this.m_LoginButton.Visible = false;
+            this.m_LogoutButton.Visible = true;
+
+            this.m_PostsListTitle.Visible = true;
+            this.m_PostsList.Visible = true;
+
+            this.m_FriendsList.Visible = true;
+            this.m_FriendsListTitle.Visible = true;
+
+            this.m_CheckinsList.Visible = true;
+            this.m_CheckinsListTitle.Visible = true;
+
+            this.m_ProfileImage.LoadAsync(this.m_LoggedInUser.PictureSmallURL);
+        }
+
         private void logout(object sender, EventArgs e)
         {
             FacebookService.Logout(new Action(() => {
-                this.clearUIData();
+                this.clearUIComponents();
             }));
         }
 
-        private void clearUIData()
+        private void clearUIComponents()
         {
             this.m_ProfileImage.ImageLocation = "";
             this.m_FriendProfileImage.ImageLocation = "";
             this.m_FriendProfileImageBorder.BackColor = Color.White;
+
             this.m_CheckinsList.Items.Clear();
+            this.m_CheckinsList.Visible = false;
+            this.m_CheckinsListTitle.Visible = false;
+
             this.m_FriendsList.Items.Clear();
+            this.m_FriendsList.Visible = false;
+            this.m_FriendsListTitle.Visible = false;
+
             this.m_PostsList.Items.Clear();
-            this.m_LogoutButton.Enabled = false;
-            this.m_LoginButton.Enabled = true;
+            this.m_PostsList.Visible = false;
+            this.m_PostsListTitle.Visible = false;
+
+            this.m_LogoutButton.Visible = false;
+            this.m_LoginButton.Visible = true;
         }
 
         private void fetchLikedPages()
