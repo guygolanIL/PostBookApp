@@ -46,10 +46,13 @@ namespace PostBookApp
 
             if (!string.IsNullOrEmpty(result.AccessToken))
             {
+                this.m_LoginButton.Enabled = false;
+                this.m_LogoutButton.Enabled = true;
                 this.m_LoggedInUser = result.LoggedInUser;
                 this.m_ProfileImage.LoadAsync(this.m_LoggedInUser.PictureSmallURL);
-                MessageBox.Show(string.Format("Hello {0} {1}", this.m_LoggedInUser.FirstName, this.m_LoggedInUser.LastName));
                 this.fetchFriends();
+                this.fetchCheckins();
+                this.fetchPosts();
             }
             else
             {
@@ -63,8 +66,40 @@ namespace PostBookApp
                 this.m_ProfileImage.ImageLocation = "";
                 this.m_FriendProfileImage.ImageLocation = "";
                 this.m_FriendProfileImageBorder.BackColor = Color.White;
+                this.m_CheckinsList.Items.Clear();
                 this.m_FriendsList.Items.Clear();
+                this.m_PostsList.Items.Clear();
+                this.m_LogoutButton.Enabled = false;
+                this.m_LoginButton.Enabled = true;
             }));
+        }
+
+        private void fetchLikedPages()
+        {
+            FacebookObjectCollection<Page> pages = this.m_LoggedInUser.LikedPages;
+            foreach (Page p in pages)
+            {
+                //this.m_LikedPagesList;
+            }
+        }
+
+        private void fetchPosts()
+        {
+            foreach (Post post in m_LoggedInUser.Posts)
+            {
+                if (post.Message != null)
+                {
+                    this.m_PostsList.Items.Add(post.Message);
+                }
+                else if (post.Caption != null)
+                {
+                    this.m_PostsList.Items.Add(post.Caption);
+                }
+                else
+                {
+                    this.m_PostsList.Items.Add(string.Format("[{0}]", post.Type));
+                }
+            }
         }
 
         private void fetchFriends()
@@ -76,10 +111,13 @@ namespace PostBookApp
                 this.m_FriendsList.Items.Add(friend);
                 friend.ReFetch(DynamicWrapper.eLoadOptions.Full);
             }
+        }
 
-            if (this.m_LoggedInUser.Friends.Count == 0)
+        private void fetchCheckins()
+        {
+            foreach (Checkin checkin in this.m_LoggedInUser.Checkins)
             {
-                MessageBox.Show("No Friends to retrieve :(");
+                this.m_CheckinsList.Items.Add(checkin.Place.Name);
             }
         }
 
