@@ -41,6 +41,8 @@ namespace PostBookApp
             this.m_CheckinsListTitle = new System.Windows.Forms.TextBox();
             this.m_PostsList = new System.Windows.Forms.ListBox();
             this.m_PostsListTitle = new System.Windows.Forms.TextBox();
+            this.m_LikedPagesList = new System.Windows.Forms.ListBox();
+            this.m_LoginLoader = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.m_ProfileImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_FriendProfileImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_FriendProfileImageBorder)).BeginInit();
@@ -65,22 +67,22 @@ namespace PostBookApp
             this.m_ProfileImage.TabStop = false;
             // 
             // m_LogoutButton
-            //
+            // 
             this.m_LogoutButton.Location = new System.Drawing.Point(86, 23);
             this.m_LogoutButton.Name = "m_LogoutButton";
             this.m_LogoutButton.Size = new System.Drawing.Size(75, 23);
             this.m_LogoutButton.TabIndex = 2;
             this.m_LogoutButton.Text = "Logout";
-            this.m_LogoutButton.Visible = false;
             this.m_LogoutButton.UseVisualStyleBackColor = true;
+            this.m_LogoutButton.Visible = false;
             this.m_LogoutButton.Click += new System.EventHandler(this.logout);
             // 
             // m_FriendsList
             // 
             this.m_FriendsList.FormattingEnabled = true;
-            this.m_FriendsList.Location = new System.Drawing.Point(1193, 311);
+            this.m_FriendsList.Location = new System.Drawing.Point(1172, 311);
             this.m_FriendsList.Name = "m_FriendsList";
-            this.m_FriendsList.Size = new System.Drawing.Size(102, 199);
+            this.m_FriendsList.Size = new System.Drawing.Size(123, 199);
             this.m_FriendsList.TabIndex = 3;
             this.m_FriendsList.Visible = false;
             this.m_FriendsList.SelectedIndexChanged += new System.EventHandler(this.displaySelectedFriend);
@@ -117,9 +119,9 @@ namespace PostBookApp
             // m_CheckinsList
             // 
             this.m_CheckinsList.FormattingEnabled = true;
-            this.m_CheckinsList.Location = new System.Drawing.Point(1193, 23);
+            this.m_CheckinsList.Location = new System.Drawing.Point(1172, 23);
             this.m_CheckinsList.Name = "m_CheckinsList";
-            this.m_CheckinsList.Size = new System.Drawing.Size(102, 238);
+            this.m_CheckinsList.Size = new System.Drawing.Size(123, 238);
             this.m_CheckinsList.TabIndex = 8;
             this.m_CheckinsList.Visible = false;
             // 
@@ -153,11 +155,31 @@ namespace PostBookApp
             this.m_PostsListTitle.Text = "Your Posts:";
             this.m_PostsListTitle.Visible = false;
             // 
+            // m_LikedPagesList
+            // 
+            this.m_LikedPagesList.FormattingEnabled = true;
+            this.m_LikedPagesList.Location = new System.Drawing.Point(2, 326);
+            this.m_LikedPagesList.Name = "m_LikedPagesList";
+            this.m_LikedPagesList.Size = new System.Drawing.Size(165, 173);
+            this.m_LikedPagesList.TabIndex = 12;
+            this.m_LikedPagesList.Visible = false;
+            // 
+            // m_LoginLoader
+            // 
+            this.m_LoginLoader.Location = new System.Drawing.Point(517, 219);
+            this.m_LoginLoader.Name = "LoginLoader";
+            this.m_LoginLoader.Size = new System.Drawing.Size(239, 23);
+            this.m_LoginLoader.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.m_LoginLoader.TabIndex = 13;
+            this.m_LoginLoader.Visible = false;
+            // 
             // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1296, 510);
+            this.Controls.Add(this.m_LoginLoader);
+            this.Controls.Add(this.m_LikedPagesList);
             this.Controls.Add(this.m_PostsListTitle);
             this.Controls.Add(this.m_PostsList);
             this.Controls.Add(this.m_CheckinsListTitle);
@@ -197,6 +219,8 @@ namespace PostBookApp
         private System.Windows.Forms.TextBox m_CheckinsListTitle;
         private System.Windows.Forms.ListBox m_PostsList;
         private System.Windows.Forms.TextBox m_PostsListTitle;
+        private System.Windows.Forms.ListBox m_LikedPagesList;
+        private System.Windows.Forms.ProgressBar m_LoginLoader;
     }
 }
 
