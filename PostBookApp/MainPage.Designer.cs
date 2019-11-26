@@ -46,17 +46,21 @@ namespace PostBookApp
             this.m_TabControl = new System.Windows.Forms.TabControl();
             this.m_HomeTab = new System.Windows.Forms.TabPage();
             this.m_AlbumsTab = new System.Windows.Forms.TabPage();
+            this.m_AlbumsList = new System.Windows.Forms.ListBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.m_ProfileImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_FriendProfileImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_FriendProfileImageBorder)).BeginInit();
             this.m_TabControl.SuspendLayout();
             this.m_HomeTab.SuspendLayout();
+            this.m_AlbumsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // m_LoginButton
             // 
             this.m_LoginButton.Location = new System.Drawing.Point(549, 202);
-            this.m_LoginButton.Name = "LoginButton";
+            this.m_LoginButton.Name = "m_LoginButton";
             this.m_LoginButton.Size = new System.Drawing.Size(152, 32);
             this.m_LoginButton.TabIndex = 0;
             this.m_LoginButton.Text = "Login";
@@ -66,7 +70,7 @@ namespace PostBookApp
             // m_ProfileImage
             // 
             this.m_ProfileImage.Location = new System.Drawing.Point(6, 10);
-            this.m_ProfileImage.Name = "ProfileImage";
+            this.m_ProfileImage.Name = "m_ProfileImage";
             this.m_ProfileImage.Size = new System.Drawing.Size(54, 52);
             this.m_ProfileImage.TabIndex = 1;
             this.m_ProfileImage.TabStop = false;
@@ -74,7 +78,7 @@ namespace PostBookApp
             // m_LogoutButton
             // 
             this.m_LogoutButton.Location = new System.Drawing.Point(76, 22);
-            this.m_LogoutButton.Name = "LogoutButton";
+            this.m_LogoutButton.Name = "m_LogoutButton";
             this.m_LogoutButton.Size = new System.Drawing.Size(75, 23);
             this.m_LogoutButton.TabIndex = 2;
             this.m_LogoutButton.Text = "Logout";
@@ -86,7 +90,7 @@ namespace PostBookApp
             // 
             this.m_FriendsList.FormattingEnabled = true;
             this.m_FriendsList.Location = new System.Drawing.Point(1162, 338);
-            this.m_FriendsList.Name = "FriendsList";
+            this.m_FriendsList.Name = "m_FriendsList";
             this.m_FriendsList.Size = new System.Drawing.Size(123, 147);
             this.m_FriendsList.TabIndex = 3;
             this.m_FriendsList.Visible = false;
@@ -96,7 +100,7 @@ namespace PostBookApp
             // 
             this.m_FriendsListTitle.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.m_FriendsListTitle.Location = new System.Drawing.Point(1187, 323);
-            this.m_FriendsListTitle.Name = "FriendsListTitle";
+            this.m_FriendsListTitle.Name = "m_FriendsListTitle";
             this.m_FriendsListTitle.Size = new System.Drawing.Size(55, 13);
             this.m_FriendsListTitle.TabIndex = 4;
             this.m_FriendsListTitle.Text = "Friends List";
@@ -106,7 +110,7 @@ namespace PostBookApp
             // 
             this.m_FriendProfileImage.BackColor = System.Drawing.Color.White;
             this.m_FriendProfileImage.Location = new System.Drawing.Point(1247, 302);
-            this.m_FriendProfileImage.Name = "FriendProfileImage";
+            this.m_FriendProfileImage.Name = "m_FriendProfileImage";
             this.m_FriendProfileImage.Size = new System.Drawing.Size(31, 31);
             this.m_FriendProfileImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.m_FriendProfileImage.TabIndex = 5;
@@ -116,7 +120,7 @@ namespace PostBookApp
             // 
             this.m_FriendProfileImageBorder.BackColor = System.Drawing.Color.White;
             this.m_FriendProfileImageBorder.Location = new System.Drawing.Point(1243, 299);
-            this.m_FriendProfileImageBorder.Name = "FriendProfileImageBorder";
+            this.m_FriendProfileImageBorder.Name = "m_FriendProfileImageBorder";
             this.m_FriendProfileImageBorder.Size = new System.Drawing.Size(39, 37);
             this.m_FriendProfileImageBorder.TabIndex = 7;
             this.m_FriendProfileImageBorder.TabStop = false;
@@ -125,7 +129,7 @@ namespace PostBookApp
             // 
             this.m_CheckinsList.FormattingEnabled = true;
             this.m_CheckinsList.Location = new System.Drawing.Point(1162, 53);
-            this.m_CheckinsList.Name = "CheckinsList";
+            this.m_CheckinsList.Name = "m_CheckinsList";
             this.m_CheckinsList.Size = new System.Drawing.Size(123, 238);
             this.m_CheckinsList.TabIndex = 8;
             this.m_CheckinsList.Visible = false;
@@ -134,7 +138,7 @@ namespace PostBookApp
             // 
             this.m_CheckinsListTitle.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.m_CheckinsListTitle.Location = new System.Drawing.Point(1178, 34);
-            this.m_CheckinsListTitle.Name = "CheckinsListTitle";
+            this.m_CheckinsListTitle.Name = "m_CheckinsListTitle";
             this.m_CheckinsListTitle.Size = new System.Drawing.Size(100, 13);
             this.m_CheckinsListTitle.TabIndex = 9;
             this.m_CheckinsListTitle.Text = "Your Checkins";
@@ -145,7 +149,7 @@ namespace PostBookApp
             this.m_PostsList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.m_PostsList.FormattingEnabled = true;
             this.m_PostsList.Location = new System.Drawing.Point(421, 72);
-            this.m_PostsList.Name = "PostsList";
+            this.m_PostsList.Name = "m_PostsList";
             this.m_PostsList.Size = new System.Drawing.Size(368, 91);
             this.m_PostsList.TabIndex = 10;
             this.m_PostsList.Visible = false;
@@ -154,7 +158,7 @@ namespace PostBookApp
             // 
             this.m_PostsListTitle.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.m_PostsListTitle.Location = new System.Drawing.Point(421, 53);
-            this.m_PostsListTitle.Name = "PostsListTitle";
+            this.m_PostsListTitle.Name = "m_PostsListTitle";
             this.m_PostsListTitle.Size = new System.Drawing.Size(238, 13);
             this.m_PostsListTitle.TabIndex = 11;
             this.m_PostsListTitle.Text = "Your Posts:";
@@ -164,7 +168,7 @@ namespace PostBookApp
             // 
             this.m_LikedPagesList.FormattingEnabled = true;
             this.m_LikedPagesList.Location = new System.Drawing.Point(0, 312);
-            this.m_LikedPagesList.Name = "LikedPagesList";
+            this.m_LikedPagesList.Name = "m_LikedPagesList";
             this.m_LikedPagesList.Size = new System.Drawing.Size(165, 173);
             this.m_LikedPagesList.TabIndex = 12;
             this.m_LikedPagesList.Visible = false;
@@ -172,7 +176,7 @@ namespace PostBookApp
             // m_LoginLoader
             // 
             this.m_LoginLoader.Location = new System.Drawing.Point(510, 240);
-            this.m_LoginLoader.Name = "LoginLoader";
+            this.m_LoginLoader.Name = "m_LoginLoader";
             this.m_LoginLoader.Size = new System.Drawing.Size(239, 23);
             this.m_LoginLoader.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.m_LoginLoader.TabIndex = 13;
@@ -183,7 +187,7 @@ namespace PostBookApp
             this.m_TabControl.Controls.Add(this.m_HomeTab);
             this.m_TabControl.Controls.Add(this.m_AlbumsTab);
             this.m_TabControl.Location = new System.Drawing.Point(2, -1);
-            this.m_TabControl.Name = "TabControl";
+            this.m_TabControl.Name = "m_TabControl";
             this.m_TabControl.SelectedIndex = 0;
             this.m_TabControl.Size = new System.Drawing.Size(1293, 511);
             this.m_TabControl.TabIndex = 14;
@@ -204,7 +208,7 @@ namespace PostBookApp
             this.m_HomeTab.Controls.Add(this.m_ProfileImage);
             this.m_HomeTab.Controls.Add(this.m_LoginButton);
             this.m_HomeTab.Location = new System.Drawing.Point(4, 22);
-            this.m_HomeTab.Name = "HomeTab";
+            this.m_HomeTab.Name = "m_HomeTab";
             this.m_HomeTab.Padding = new System.Windows.Forms.Padding(3);
             this.m_HomeTab.Size = new System.Drawing.Size(1285, 485);
             this.m_HomeTab.TabIndex = 0;
@@ -213,13 +217,31 @@ namespace PostBookApp
             // 
             // m_AlbumsTab
             // 
+            this.m_AlbumsTab.Controls.Add(this.pictureBox1);
+            this.m_AlbumsTab.Controls.Add(this.m_AlbumsList);
             this.m_AlbumsTab.Location = new System.Drawing.Point(4, 22);
-            this.m_AlbumsTab.Name = "AlbumsTab";
+            this.m_AlbumsTab.Name = "m_AlbumsTab";
             this.m_AlbumsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.m_AlbumsTab.Size = new System.Drawing.Size(192, 74);
+            this.m_AlbumsTab.Size = new System.Drawing.Size(1285, 485);
             this.m_AlbumsTab.TabIndex = 1;
             this.m_AlbumsTab.Text = "Albums";
             this.m_AlbumsTab.UseVisualStyleBackColor = true;
+            // 
+            // m_AlbumsList
+            // 
+            this.m_AlbumsList.FormattingEnabled = true;
+            this.m_AlbumsList.Location = new System.Drawing.Point(70, 94);
+            this.m_AlbumsList.Name = "m_AlbumsList";
+            this.m_AlbumsList.Size = new System.Drawing.Size(248, 238);
+            this.m_AlbumsList.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(390, 94);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(186, 192);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
             // 
             // MainPage
             // 
@@ -235,6 +257,8 @@ namespace PostBookApp
             this.m_TabControl.ResumeLayout(false);
             this.m_HomeTab.ResumeLayout(false);
             this.m_HomeTab.PerformLayout();
+            this.m_AlbumsTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -262,6 +286,8 @@ namespace PostBookApp
         private System.Windows.Forms.TabControl m_TabControl;
         private System.Windows.Forms.TabPage m_HomeTab;
         private System.Windows.Forms.TabPage m_AlbumsTab;
+        private System.Windows.Forms.ListBox m_AlbumsList;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

@@ -57,6 +57,7 @@ namespace PostBookApp
                 this.fetchCheckins();
                 this.fetchPosts();
                 this.fetchLikedPages();
+                this.fetchMostLikedAlbum();
 
                 this.showUIComponents();
             }
@@ -66,9 +67,9 @@ namespace PostBookApp
             }
         }
 
-        private void showLoader(bool v)
+        private void showLoader(bool i_v)
         {
-            this.m_LoginLoader.Visible = v;
+            this.m_LoginLoader.Visible = i_v;
         }
 
         private void showUIComponents()
@@ -168,6 +169,22 @@ namespace PostBookApp
                 this.m_FriendsList.Items.Add(friend);
                 friend.ReFetch(DynamicWrapper.eLoadOptions.Full);
             }
+        }
+
+        private void fetchMostLikedAlbum()
+        {
+            FacebookObjectCollection<Album> albums = this.m_LoggedInUser.Albums;
+
+            foreach (Album album in albums)
+            {
+                this.m_AlbumsList.Items.Add(album);
+            }
+
+            IOrderedEnumerable<Album> orderedAlbumsByMostLikes = albums.OrderBy((album) => album.LikedBy.Count);
+            Album mostLikedAlbum = orderedAlbumsByMostLikes.Last();
+
+
+
         }
 
         private void fetchCheckins()
