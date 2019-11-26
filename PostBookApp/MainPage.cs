@@ -130,7 +130,7 @@ namespace PostBookApp
         {
             this.m_LikedPagesList.Items.Clear();
             this.m_LikedPagesList.DisplayMember = "Name";
-            //FacebookObjectCollection<Page> pages = this.m_LoggedInUser.LikedPages; // this doesnt work i fetch the data without the wrapper
+            //FacebookObjectCollection<Page> pages = this.m_LoggedInUser.LikedPages; // this doesnt work so i fetch the data without the wrapper
             string query = string.Format("https://graph.facebook.com/v5.0/{0}/likes/?access_token={1}", this.m_LoggedInUser.Id, this.m_Token);
             dynamic a = new Facebook.FacebookClient().Get(query);
             
