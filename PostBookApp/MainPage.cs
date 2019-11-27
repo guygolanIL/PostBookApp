@@ -13,9 +13,10 @@ namespace PostBookApp
 {
     public partial class MainPage : Form
     {
-
         private User m_LoggedInUser;
         private string m_Token;
+        private FacebookObjectCollection<Album> m_SavedAlbums;
+        private FacebookObjectCollection<Page> m_SavedLikedPages;
 
         public MainPage()
         {
@@ -57,7 +58,7 @@ namespace PostBookApp
                 this.fetchCheckins();
                 this.fetchPosts();
                 this.fetchLikedPages();
-                this.fetchMostLikedAlbum();
+                this.fetchAlbums();
 
                 this.showUIComponents();
             }
@@ -93,7 +94,7 @@ namespace PostBookApp
             this.m_ProfileImage.LoadAsync(this.m_LoggedInUser.PictureSmallURL);
         }
 
-        private void logout(object sender, EventArgs e)
+        private void logout(object i_sender, EventArgs i_e)
         {
             this.showLoader(true);
             FacebookService.Logout(new Action(() => {
@@ -171,20 +172,76 @@ namespace PostBookApp
             }
         }
 
-        private void fetchMostLikedAlbum()
+        private void fetchAlbums()
         {
-            FacebookObjectCollection<Album> albums = this.m_LoggedInUser.Albums;
+            this.m_SavedAlbums = this.m_LoggedInUser.Albums;
 
-            foreach (Album album in albums)
+            foreach (Album album in this.m_SavedAlbums)
             {
-                this.m_AlbumsList.Items.Add(album);
+                this.m_AlbumsList.Items.Add(album.Name);
+            }
+        }
+
+        private void friendSelected (object i_sender, EventArgs i_e)
+        {
+            if(this.m_FriendsListBox.SelectedItems.Count == 1)
+            {
+                FacebookObjectCollection<Page> intersection = new FacebookObjectCollection<Page>();
+                User selectedFriend = this.m_FriendsListBox.SelectedItem as User;
+                FacebookObjectCollection<Page> friendLikedPages = selectedFriend.LikedPages;
+
+                friendLikedPages.Intersect<Page>(this.m_SavedLikedPages, (Page page) => {
+                    
+                });
+
+            
+            }
+        }
+
+        private void displaySelectedAlbum(object i_sender, EventArgs i_e)
+        {
+            if (this.m_AlbumsList.SelectedItems.Count == 1)
+            {
+                string selectedAlbumName = this.m_AlbumsList.SelectedItem as string;
+                Album selectedAlbum = this.m_SavedAlbums.Find((album) => album.Name == selectedAlbumName);
+                FacebookObjectCollection<Photo> photos = selectedAlbum.Photos;
+                IOrderedEnumerable<Photo> ordered = photos.OrderBy(this.getLikedByCount);
+                Photo topLikedPhoto = ordered.Last();
+
+                Comment mostLikedCommentFromTopLikedPhoto = getMostLikedCommentFromPhoto(topLikedPhoto);
+
+                this.m_MostLikedPhotoPictureBox.LoadAsync(topLikedPhoto.PictureThumbURL);
+                if (mostLikedCommentFromTopLikedPhoto != null) 
+                {
+                    this.m_MostLikedCommentFromMostLikedPhotoTextBox.Text = mostLikedCommentFromTopLikedPhoto.Message;
+                }
+                else
+                {
+                    this.m_MostLikedCommentFromMostLikedPhotoTextBox.Text = "No Comments...";
+                }
+
+            }
+        }
+
+        private Comment getMostLikedCommentFromPhoto(Photo photo)
+        {
+            Comment result = null;
+            FacebookObjectCollection<Comment> comments = photo.Comments;
+
+            if(comments.Count > 0)
+            {
+                IOrderedEnumerable<Comment> orderedCommentsByLikes = comments.OrderBy(this.getLikedByCount);
+                Comment c = orderedCommentsByLikes.Last();
+                result = c;
             }
 
-            IOrderedEnumerable<Album> orderedAlbumsByMostLikes = albums.OrderBy((album) => album.LikedBy.Count);
-            Album mostLikedAlbum = orderedAlbumsByMostLikes.Last();
+            return result;
+        }
 
-
-
+        private int getLikedByCount(PostedItem postedItem)
+        {
+            int count = postedItem.LikedBy.Count;
+            return count;
         }
 
         private void fetchCheckins()
@@ -195,7 +252,7 @@ namespace PostBookApp
             }
         }
 
-        private void displaySelectedFriend(object sender, EventArgs e)
+        private void displaySelectedFriend(object i_sender, EventArgs i_e)
         {
             if (this.m_FriendsList.SelectedItems.Count == 1)
             {
@@ -209,6 +266,10 @@ namespace PostBookApp
                         if(status == User.eOnlineStatus.active)
                         {
                             this.m_FriendProfileImageBorder.BackColor = Color.LawnGreen;
+                        } 
+                        else
+                        {
+                            this.m_FriendProfileImageBorder.BackColor = Color.Red;
                         }
                     }
                     else // since getting online status always return null i'll color it red 
