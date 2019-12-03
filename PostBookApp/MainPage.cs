@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using PostBookApp.Util;
 
 namespace PostBookApp
 {
@@ -16,14 +17,10 @@ namespace PostBookApp
         private User m_LoggedInUser;
         private string m_Token;
         private FacebookObjectCollection<Album> m_SavedAlbums;
-        private FacebookObjectCollection<Page> m_SavedLikedPages = MainPage.getMockedPages();
+        private FacebookObjectCollection<MockPage> m_SavedLikedPages = MockHelper.getMockedPages(5);
+        private FacebookObjectCollection<User> m_SavedFriends = new FacebookObjectCollection<User>();
 
-        private static FacebookObjectCollection<Page> getMockedPages()
-        {
-            FacebookObjectCollection<Page> mockedPages = new FacebookObjectCollection<Page>();
-            return mockedPages;
-        }
-
+       
         public MainPage()
         {
             InitializeComponent();
@@ -174,7 +171,9 @@ namespace PostBookApp
             foreach (User friend in m_LoggedInUser.Friends)
             {
                 this.m_FriendsList.Items.Add(friend);
+                this.m_FriendsListBox.Items.Add(friend);
                 friend.ReFetch(DynamicWrapper.eLoadOptions.Full);
+                this.m_SavedFriends.Add(friend);
             }
         }
 
@@ -190,17 +189,17 @@ namespace PostBookApp
 
         private void friendSelected(object i_sender, EventArgs i_e)
         {
-            if(this.m_FriendsListBox.SelectedItems.Count == 1)
+            if(this.m_FriendsList.SelectedItems.Count == 1)
             {
-                FacebookObjectCollection<Page> intersection = new FacebookObjectCollection<Page>();
-                User selectedFriend = this.m_FriendsListBox.SelectedItem as User;
-                FacebookObjectCollection<Page> friendLikedPages = selectedFriend.LikedPages;
+                User selectedFriend = this.m_FriendsList.SelectedItem as User;
+                /*FacebookObjectCollection<Page> friendLikedPages = selectedFriend.LikedPages;*/ // fetching the selected friend Liked pages threw OAuth exception for some reason, im mocking out the Intersected Pages
 
-                IEnumerable<Page> intersectedPages = friendLikedPages.Intersect(this.m_SavedLikedPages, (Page page1, Page page2) => {
-                    return page1.Name.Equals(page2.Name);                    
-                });
-            
+                IEnumerable<MockPage> intersectedPages = MockHelper.getMockedPages(2); // friendLikedPages.Intersect(this.m_SavedLikedPages, new PageEqualityComparer());
 
+                foreach (var page in intersectedPages)
+                {
+                    this.m_MutualLikedPagesListBox.Items.Add(page.Name);
+                }
             }
         }
 
