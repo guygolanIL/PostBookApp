@@ -16,7 +16,13 @@ namespace PostBookApp
         private User m_LoggedInUser;
         private string m_Token;
         private FacebookObjectCollection<Album> m_SavedAlbums;
-        private FacebookObjectCollection<Page> m_SavedLikedPages;
+        private FacebookObjectCollection<Page> m_SavedLikedPages = MainPage.getMockedPages();
+
+        private static FacebookObjectCollection<Page> getMockedPages()
+        {
+            FacebookObjectCollection<Page> mockedPages = new FacebookObjectCollection<Page>();
+            return mockedPages;
+        }
 
         public MainPage()
         {
@@ -182,7 +188,7 @@ namespace PostBookApp
             }
         }
 
-        private void friendSelected (object i_sender, EventArgs i_e)
+        private void friendSelected(object i_sender, EventArgs i_e)
         {
             if(this.m_FriendsListBox.SelectedItems.Count == 1)
             {
@@ -190,11 +196,11 @@ namespace PostBookApp
                 User selectedFriend = this.m_FriendsListBox.SelectedItem as User;
                 FacebookObjectCollection<Page> friendLikedPages = selectedFriend.LikedPages;
 
-                friendLikedPages.Intersect<Page>(this.m_SavedLikedPages, (Page page) => {
-                    
+                IEnumerable<Page> intersectedPages = friendLikedPages.Intersect(this.m_SavedLikedPages, (Page page1, Page page2) => {
+                    return page1.Name.Equals(page2.Name);                    
                 });
-
             
+
             }
         }
 
@@ -203,6 +209,7 @@ namespace PostBookApp
             if (this.m_AlbumsList.SelectedItems.Count == 1)
             {
                 string selectedAlbumName = this.m_AlbumsList.SelectedItem as string;
+                // TODO - Change all lambdas to regular functions
                 Album selectedAlbum = this.m_SavedAlbums.Find((album) => album.Name == selectedAlbumName);
                 FacebookObjectCollection<Photo> photos = selectedAlbum.Photos;
                 IOrderedEnumerable<Photo> ordered = photos.OrderBy(this.getLikedByCount);
