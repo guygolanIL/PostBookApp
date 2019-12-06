@@ -8,10 +8,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using PostBookApp.Util;
+
 
 namespace PostBookApp
 {
+    using Helpers;
+    using AppSettings;
     public partial class MainPage : Form
     {
         private User m_LoggedInUser;
@@ -29,27 +31,7 @@ namespace PostBookApp
         private void loginAndInit()
         {
             this.showLoader(true);
-            LoginResult result = FacebookService.Login("817562982032756",
-
-                "public_profile",
-                "email",
-                "publish_to_groups",
-                "user_birthday",
-                "user_age_range",
-                "user_gender",
-                "user_link",
-                "user_tagged_places",
-                "user_videos",
-                "publish_to_groups",
-                "groups_access_member_info",
-                "user_friends",
-                "user_events",
-                "user_likes",
-                "user_location",
-                "user_photos",
-                "user_posts",
-                "user_hometown"
-                );
+            LoginResult result = FacebookService.Login(AppProperties.getAppId(), AppProperties.getAppPermissions());
 
             this.m_Token = result.AccessToken;
 
@@ -100,10 +82,13 @@ namespace PostBookApp
         private void logout(object i_sender, EventArgs i_e)
         {
             this.showLoader(true);
-            FacebookService.Logout(new Action(() => {
-                this.showLoader(false);
-                this.clearUIComponents();
-            }));
+            FacebookService.Logout(new Action(this.logoutCallback));
+        }
+
+        private void logoutCallback()
+        {
+            this.showLoader(false);
+            this.clearUIComponents();
         }
 
         private void clearUIComponents()
@@ -135,13 +120,23 @@ namespace PostBookApp
         {
             this.m_LikedPagesList.Items.Clear();
             this.m_LikedPagesList.DisplayMember = "Name";
-            //FacebookObjectCollection<Page> pages = this.m_LoggedInUser.LikedPages; // this doesnt work so i fetch the data without the wrapper
-            string query = string.Format("https://graph.facebook.com/v5.0/{0}/likes/?access_token={1}", this.m_LoggedInUser.Id, this.m_Token);
-            dynamic a = new Facebook.FacebookClient().Get(query);
-            
-            foreach (dynamic item in a.data)
+            try
             {
-                this.m_LikedPagesList.Items.Add(item.name);
+                FacebookObjectCollection<Page> pages = this.m_LoggedInUser.LikedPages; //this doesnt work so i fetch the data without the wrapper in the catch clause
+                foreach (Page page in pages)
+                {
+                    this.m_LikedPagesList.Items.Add(page.Name);
+                }
+            }
+            catch (Exception e)
+            {
+                string query = string.Format("https://graph.facebook.com/v5.0/{0}/likes/?access_token={1}", this.m_LoggedInUser.Id, this.m_Token);
+                dynamic a = new Facebook.FacebookClient().Get(query);
+            
+                foreach (dynamic item in a.data)
+                {
+                    this.m_LikedPagesList.Items.Add(item.name);
+                }
             }
         }
 
@@ -171,7 +166,7 @@ namespace PostBookApp
             foreach (User friend in m_LoggedInUser.Friends)
             {
                 this.m_FriendsList.Items.Add(friend);
-                this.m_FriendsListBox.Items.Add(friend);
+                this.m_FriendsListBox.Items.Add(friend.Name);
                 friend.ReFetch(DynamicWrapper.eLoadOptions.Full);
                 this.m_SavedFriends.Add(friend);
             }
@@ -187,18 +182,31 @@ namespace PostBookApp
             }
         }
 
-        private void friendSelected(object i_sender, EventArgs i_e)
+        private void friendSelected(object i_Sender, EventArgs i_E)
         {
-            if(this.m_FriendsList.SelectedItems.Count == 1)
+            if(this.m_FriendsListBox.SelectedItems.Count == 1)
             {
-                User selectedFriend = this.m_FriendsList.SelectedItem as User;
-                /*FacebookObjectCollection<Page> friendLikedPages = selectedFriend.LikedPages;*/ // fetching the selected friend Liked pages threw OAuth exception for some reason, im mocking out the Intersected Pages
-
-                IEnumerable<MockPage> intersectedPages = MockHelper.getMockedPages(2); // friendLikedPages.Intersect(this.m_SavedLikedPages, new PageEqualityComparer());
-
-                foreach (var page in intersectedPages)
+                try
                 {
-                    this.m_MutualLikedPagesListBox.Items.Add(page.Name);
+                    string selectedFriendName = this.m_FriendsListBox.SelectedItem as string;
+                    User selectedFriend = this.m_SavedFriends.Find(delegate(User user) { return user.Name.Equals(selectedFriendName); });
+
+                    FacebookObjectCollection<Page> friendLikedPages = selectedFriend.LikedPages; // fetching the selected friend Liked pages threw OAuth exception for some reason, im mocking out the Intersected in the catch
+                    IEnumerable<Page> intersectedPages = friendLikedPages.Intersect<Page>(this.m_SavedLikedPages, new PageEqualityComparer());
+                    
+                    foreach (Page page in intersectedPages)
+                    {
+                        this.m_MutualLikedPagesListBox.Items.Add(page.Name);
+                    }
+                }
+                catch (Exception e)
+                {
+                    IEnumerable<MockPage> intersectedPages = MockHelper.getMockedPages(2); 
+
+                    foreach (var page in intersectedPages)
+                    {
+                        this.m_MutualLikedPagesListBox.Items.Add(page.Name);
+                    }
                 }
             }
         }
@@ -209,7 +217,7 @@ namespace PostBookApp
             {
                 string selectedAlbumName = this.m_AlbumsList.SelectedItem as string;
                 // TODO - Change all lambdas to regular functions
-                Album selectedAlbum = this.m_SavedAlbums.Find((album) => album.Name == selectedAlbumName);
+                Album selectedAlbum = this.m_SavedAlbums.Find(delegate(Album album) { return album.Name == selectedAlbumName; });
                 FacebookObjectCollection<Photo> photos = selectedAlbum.Photos;
                 IOrderedEnumerable<Photo> ordered = photos.OrderBy(this.getLikedByCount);
                 Photo topLikedPhoto = ordered.Last();

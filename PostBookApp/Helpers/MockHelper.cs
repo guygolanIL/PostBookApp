@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FacebookWrapper.ObjectModel;
 
-namespace PostBookApp.Util
+namespace PostBookApp.Helpers
 {
-    class MockHelper
+    internal class MockHelper
     {
         public static FacebookObjectCollection<MockPage> getMockedPages(int i_howMany)
         {

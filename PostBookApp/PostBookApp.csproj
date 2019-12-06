@@ -52,12 +52,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSettings\AppProperties.cs" />
     <Compile Include="MainPage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainPage.Designer.cs">
       <DependentUpon>MainPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\MockHelper.cs" />
+    <Compile Include="Helpers\MockPage.cs" />
+    <Compile Include="Helpers\PageEqualityComparer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainPage.resx">
@@ -86,5 +90,6 @@
     <Content Include="FBApi\Facebook.dll" />
     <Content Include="FBApi\FbGraphApiWrapper.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

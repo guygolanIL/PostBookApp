@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using FacebookWrapper.ObjectModel;
+using System;
 
-namespace PostBookApp.Util
+namespace PostBookApp.Helpers
 {
-
-    class PageEqualityComparer : IEqualityComparer<Page>
+    internal class PageEqualityComparer : IEqualityComparer<Page>
     {
         public bool Equals(Page x, Page y)
         {

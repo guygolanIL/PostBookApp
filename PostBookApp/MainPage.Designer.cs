@@ -46,6 +46,7 @@ namespace PostBookApp
             this.m_TabControl = new System.Windows.Forms.TabControl();
             this.m_HomeTab = new System.Windows.Forms.TabPage();
             this.m_AlbumsTab = new System.Windows.Forms.TabPage();
+            this.m_AlbumsTitle = new System.Windows.Forms.TextBox();
             this.m_MostLikedCommentFromMostLikedPhotoTextBox = new System.Windows.Forms.RichTextBox();
             this.m_MostLikedPhotoPictureBox = new System.Windows.Forms.PictureBox();
             this.m_AlbumsList = new System.Windows.Forms.ListBox();
@@ -54,6 +55,8 @@ namespace PostBookApp
             this.m_FriendsListTitleTextBox = new System.Windows.Forms.TextBox();
             this.m_MutualLikedPagesListBox = new System.Windows.Forms.ListBox();
             this.m_FriendsListBox = new System.Windows.Forms.ListBox();
+            this.m_MostLikedCommentTitle = new System.Windows.Forms.TextBox();
+            this.m_MostLikedPhotoTitle = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.m_ProfileImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_FriendProfileImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_FriendProfileImageBorder)).BeginInit();
@@ -225,6 +228,9 @@ namespace PostBookApp
             // 
             // m_AlbumsTab
             // 
+            this.m_AlbumsTab.Controls.Add(this.m_MostLikedPhotoTitle);
+            this.m_AlbumsTab.Controls.Add(this.m_MostLikedCommentTitle);
+            this.m_AlbumsTab.Controls.Add(this.m_AlbumsTitle);
             this.m_AlbumsTab.Controls.Add(this.m_MostLikedCommentFromMostLikedPhotoTextBox);
             this.m_AlbumsTab.Controls.Add(this.m_MostLikedPhotoPictureBox);
             this.m_AlbumsTab.Controls.Add(this.m_AlbumsList);
@@ -235,6 +241,15 @@ namespace PostBookApp
             this.m_AlbumsTab.TabIndex = 1;
             this.m_AlbumsTab.Text = "Albums";
             this.m_AlbumsTab.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.m_AlbumsTitle.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.m_AlbumsTitle.Location = new System.Drawing.Point(72, 78);
+            this.m_AlbumsTitle.Name = "textBox1";
+            this.m_AlbumsTitle.Size = new System.Drawing.Size(100, 13);
+            this.m_AlbumsTitle.TabIndex = 3;
+            this.m_AlbumsTitle.Text = "Albums:";
             // 
             // m_MostLikedCommentFromMostLikedPhotoTextBox
             // 
@@ -248,9 +263,9 @@ namespace PostBookApp
             // 
             // m_MostLikedPhotoPictureBox
             // 
-            this.m_MostLikedPhotoPictureBox.Location = new System.Drawing.Point(390, 94);
+            this.m_MostLikedPhotoPictureBox.Location = new System.Drawing.Point(384, 94);
             this.m_MostLikedPhotoPictureBox.Name = "m_MostLikedPhotoPictureBox";
-            this.m_MostLikedPhotoPictureBox.Size = new System.Drawing.Size(186, 192);
+            this.m_MostLikedPhotoPictureBox.Size = new System.Drawing.Size(192, 192);
             this.m_MostLikedPhotoPictureBox.TabIndex = 1;
             this.m_MostLikedPhotoPictureBox.TabStop = false;
             // 
@@ -278,11 +293,11 @@ namespace PostBookApp
             this.m_FriendsAndPagesTab.Text = "Mutual Liked Pages";
             this.m_FriendsAndPagesTab.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // m_MutualLikedPagesTitleTextBox
             // 
             this.m_MutualLikedPagesTitleTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.m_MutualLikedPagesTitleTextBox.Location = new System.Drawing.Point(810, 119);
-            this.m_MutualLikedPagesTitleTextBox.Name = "textBox1";
+            this.m_MutualLikedPagesTitleTextBox.Name = "m_MutualLikedPagesTitleTextBox";
             this.m_MutualLikedPagesTitleTextBox.Size = new System.Drawing.Size(100, 13);
             this.m_MutualLikedPagesTitleTextBox.TabIndex = 11;
             this.m_MutualLikedPagesTitleTextBox.Text = "Mutual Liked Pages";
@@ -315,6 +330,24 @@ namespace PostBookApp
             this.m_FriendsListBox.TabIndex = 0;
             this.m_FriendsListBox.SelectedIndexChanged += new System.EventHandler(this.friendSelected);
             // 
+            // m_MostLikedCommentTitle
+            // 
+            this.m_MostLikedCommentTitle.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.m_MostLikedCommentTitle.Location = new System.Drawing.Point(384, 295);
+            this.m_MostLikedCommentTitle.Name = "m_MostLikedCommentTitle";
+            this.m_MostLikedCommentTitle.Size = new System.Drawing.Size(117, 13);
+            this.m_MostLikedCommentTitle.TabIndex = 4;
+            this.m_MostLikedCommentTitle.Text = "Most Liked Comment:";
+            // 
+            // m_MostLikedPhoto
+            // 
+            this.m_MostLikedPhotoTitle.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.m_MostLikedPhotoTitle.Location = new System.Drawing.Point(386, 79);
+            this.m_MostLikedPhotoTitle.Name = "m_MostLikedPhoto";
+            this.m_MostLikedPhotoTitle.Size = new System.Drawing.Size(100, 13);
+            this.m_MostLikedPhotoTitle.TabIndex = 5;
+            this.m_MostLikedPhotoTitle.Text = "Most liked photo:";
+            // 
             // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -330,6 +363,7 @@ namespace PostBookApp
             this.m_HomeTab.ResumeLayout(false);
             this.m_HomeTab.PerformLayout();
             this.m_AlbumsTab.ResumeLayout(false);
+            this.m_AlbumsTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_MostLikedPhotoPictureBox)).EndInit();
             this.m_FriendsAndPagesTab.ResumeLayout(false);
             this.m_FriendsAndPagesTab.PerformLayout();
@@ -368,6 +402,9 @@ namespace PostBookApp
         private System.Windows.Forms.ListBox m_FriendsListBox;
         private System.Windows.Forms.TextBox m_FriendsListTitleTextBox;
         private System.Windows.Forms.TextBox m_MutualLikedPagesTitleTextBox;
+        private System.Windows.Forms.TextBox m_AlbumsTitle;
+        private System.Windows.Forms.TextBox m_MostLikedPhotoTitle;
+        private System.Windows.Forms.TextBox m_MostLikedCommentTitle;
     }
 }
 
